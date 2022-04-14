@@ -94,7 +94,7 @@ public class SeleniumService {
         System.out.println("Login Completed");
     }
 
-    public void updateUserProfile(WebDriver driver) throws InterruptedException {
+    public String updateUserProfile(WebDriver driver) throws InterruptedException {
         System.out.println("Updating Profile");
         driver.navigate().to("https://www.naukri.com/mnjuser/profile?id=&orgn=homepage");
         driver.manage().timeouts().implicitlyWait(350,TimeUnit.SECONDS);
@@ -125,7 +125,7 @@ public class SeleniumService {
         textBoxInput.submit();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
-        System.out.println(String.format("Updated Profile at:" + formatter.format(date)).toString());
+        return String.format("Updated Profile at:" + formatter.format(date)).toString();
     }
 
     public void tearDown(WebDriver driver) throws InterruptedException {
@@ -136,12 +136,11 @@ public class SeleniumService {
         }
     }
 
-	public void startBotForUser(UserCred userCred) {
+	public String startBotForUser(UserCred userCred) {
 		WebDriver driver=setUp();
-		userLogin(driver,userCred.getEmail(),userCred.getPassword());
-		System.out.println("login completed");
 		try {
-			updateUserProfile(driver);
+			userLogin(driver,userCred.getEmail(),userCred.getPassword());
+			return updateUserProfile(driver);
 			
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -153,6 +152,7 @@ public class SeleniumService {
 				e.printStackTrace();
 			}
 		}
+		return null;
 	}
 
 }

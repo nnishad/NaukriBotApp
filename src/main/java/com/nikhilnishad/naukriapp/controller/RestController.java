@@ -1,6 +1,8 @@
 package com.nikhilnishad.naukriapp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +17,10 @@ public class RestController {
 	private SeleniumService service;
 	
 	@PostMapping("/launch")
-	public String startBot(@RequestBody UserCred userCred) {
-		service.startBotForUser(userCred);
-		return "Profile Updated";
+	public ResponseEntity<String> startBot(@RequestBody UserCred userCred) {
+		String result=service.startBotForUser(userCred);
+		if(result!=null) return ResponseEntity.ok(result);
+		return new ResponseEntity<String>("Unable to Update", HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@GetMapping("/stop")
